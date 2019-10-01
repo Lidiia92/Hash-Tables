@@ -78,18 +78,19 @@ class HashTable:
         '''
         index = self._hash_mod(key)
         node = self.storage[index]
+        pointer = None
 
         while node is not None and node.key != key:
-            prev = node
+            pointer = node
             node = node.next
         if node is None:
             return "Node not found"
         else:
             result = node.value
-            if prev is None:
+            if pointer is None:
                 node = None
             else:
-                prev.next = prev.next.next
+                pointer.next = pointer.next.next
             return result
 
 
@@ -102,12 +103,24 @@ class HashTable:
         Fill this in.
         '''
         index = self._hash_mod(key)
-        node = self.storage[index]
+        pointer = self.storage[index]
+        found_match = False
+        searched_value = None
 
-        if node is None:
-            return None
+        # Searching over the bucket for the value of the key
+        # that we passed
+
+        while pointer is not None:
+            if pointer.key == key:
+                found_match = True
+                searched_value = pointer.value
+            pointer = pointer.next
+
+        if(found_match == True):
+            return searched_value
         else:
-            return self.storage[index].value
+            return None
+
 
 
     def resize(self):
