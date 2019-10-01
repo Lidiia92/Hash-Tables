@@ -105,7 +105,7 @@ class HashTable:
             pointer_1 = node.next
             pointer_2 = node
 
-            while pointer_1 is not None and pointer_1.key != key:
+            while pointer_1 != None and pointer_1.key != key:
                 pointer_2 = pointer_1
                 pointer_1 = pointer_1.next
             
@@ -156,7 +156,16 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+
+        new_storage = [None] * self.capacity
+
+        for item in self.storage:
+            if item is not None:
+                new_index = self._hash_mod(item.key)
+                new_storage[new_index] = item
+        
+        self.storage = new_storage
 
 
 
