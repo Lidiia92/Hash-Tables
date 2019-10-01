@@ -57,14 +57,15 @@ class HashTable:
         if node is None:
             self.storage[index] = LinkedPair(key, value)
             return
+        else: 
+            pointer = node
+            item_to_add = LinkedPair(key, value)
 
-        prev = node
+            #Finding the end of the list
+            while pointer.next is not None:
+                pointer = pointer.next
 
-        while node is not None:
-            prev = node
-            node = node.next
-
-        prev.next = LinkedPair(key, value)
+            pointer.next = item_to_add
 
 
     def remove(self, key):
