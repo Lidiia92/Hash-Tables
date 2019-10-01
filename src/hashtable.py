@@ -78,20 +78,46 @@ class HashTable:
         '''
         index = self._hash_mod(key)
         node = self.storage[index]
-        pointer = None
+        pointer_to_be_deleted = None
+        pointer_1 = None 
+        pointer_2 = None
 
-        while node is not None and node.key != key:
-            pointer = node
-            node = node.next
+        # Case 1: Node is None
         if node is None:
-            return "Node not found"
+            return "Was not found"
+
+        # Case 2: Node has 1 item with matching key
+        elif node.key == key and node.next == None:
+            node.key = None
+
+        # Case 3: Node has more than 1 item and matching key
+        # is located at first item
+
+        elif node.key == key:
+            pointer_to_be_deleted = node
+            node = node.next
+            self.storage.remove(pointer_to_be_deleted)
+
+        # Case 4: Node has more than 1 item and matching value is
+        # is not a first item
+
         else:
-            result = node.value
-            if pointer is None:
-                node = None
+            pointer_1 = node.next
+            pointer_2 = node
+
+            while pointer_1 is not None and pointer_1.key != key:
+                pointer_2 = pointer_1
+                pointer_1 = pointer_1.next
+            
+            if pointer_1 in None:
+                return 'Match not found'
             else:
-                pointer.next = pointer.next.next
-            return result
+                pointer_to_be_deleted = pointer_1
+                pointer_1 = pointer_1.next
+                pointer_2.next = pointer_1
+                self.storage.remove(pointer_to_be_deleted)
+
+
 
 
     def retrieve(self, key):
